@@ -1,5 +1,4 @@
-
-name: AveronLauncher V6 Debug APK
+Name: AveronLauncher V6 Debug APK
 
 on:
   push:
@@ -39,6 +38,7 @@ jobs:
         uses: dawidd6/action-download-artifact@v6
         continue-on-error: true
         with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
           repo: MojoLauncher/LTW
           workflow: android.yml
           workflow_conclusion: success
