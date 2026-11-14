@@ -49,16 +49,16 @@
         <activity
             android:name="net.kdt.pojavlaunch.OrynSettingsActivity"
             android:screenOrientation="landscape"
-            android:label="Oryn Settings"
+            android:label="Averon Settings"
             android:exported="false" />
         <activity
             android:name="net.kdt.pojavlaunch.OrynFileManagerActivity"
             android:screenOrientation="landscape"
-            android:label="Oryn File Manager" />
+            android:label="Averon File Manager" />
         <activity
             android:name="net.kdt.pojavlaunch.OrynDownloadActivity"
             android:screenOrientation="landscape"
-            android:label="OrynLauncher Downloads" />
+            android:label="AveronLauncher Downloads" />
         <activity
             android:name="net.kdt.pojavlaunch.OrynCrashViewerActivity"
             android:screenOrientation="landscape"
@@ -66,12 +66,12 @@
         <activity
             android:name="net.kdt.pojavlaunch.OrynCosmeticsActivity"
             android:screenOrientation="landscape"
-            android:label="Oryn Cosmetics"
+            android:label="Averon Cosmetics"
             android:exported="false" />
         <activity
             android:name="net.kdt.pojavlaunch.OrynCustomizationActivity"
             android:screenOrientation="landscape"
-            android:label="Oryn Customization"
+            android:label="Averon Customization"
             android:exported="false" />
 
         <activity
