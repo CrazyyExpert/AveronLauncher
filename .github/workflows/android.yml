@@ -1,4 +1,4 @@
-Name: AveronLauncher V6 Debug APK
+name: AveronLauncher V6 Debug APK
 
 on:
   push:
@@ -9,6 +9,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-22.04
+
     env:
       UPLOAD_KEYSTORE_PASSWORD: ${{ secrets.UPLOAD_NEXT_KEYSTORE_PASSWORD }}
       MOJOPUB_KEYSTORE_PASSWORD: ${{ secrets.RELEASE_NEXT_KEYSTORE_PASSWORD }}
@@ -16,20 +17,25 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           submodules: true
 
       - name: Restore native dependency submodules
         run: |
           set -e
+
           rm -rf glfw sdl mojoexec
+
           git clone https://github.com/MojoLauncher/glfw.git glfw
           git -C glfw checkout 7900e19fd2dbcad5abb4affc3b9d56c27e164c59
+
           git clone https://github.com/MojoLauncher/MojoSDL.git sdl
           git -C sdl checkout b81efe99684acc5ec7e0ed94d941ac8e1c89bd42
+
           git clone https://github.com/MojoLauncher/mojoexec.git mojoexec
           git -C mojoexec checkout 27790c525c3f572d9611bfa05c532014be367ca0
+
           test -f glfw/jni_bindings/build.gradle
           test -f sdl/jni_bindings/build.gradle
           test -f mojoexec/CMakeLists.txt
@@ -38,7 +44,6 @@ jobs:
         uses: dawidd6/action-download-artifact@v6
         continue-on-error: true
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
           repo: MojoLauncher/LTW
           workflow: android.yml
           workflow_conclusion: success
@@ -61,73 +66,85 @@ jobs:
         run: |
           set -e
           shopt -s nullglob
+
           for aar in app_orynlauncher/libs/*.aar; do
             if unzip -l "$aar" | grep -q 'jni/out/libandroidx.graphics.path.so'; then
-              echo "Removing malformed jni/out/libandroidx.graphics.path.so from $aar"
+              echo "Removing malformed library from $aar"
+
+              aar_path="$(realpath "$aar")"
               tmpdir="$(mktemp -d)"
+
               unzip -q "$aar" -d "$tmpdir"
               rm -f "$tmpdir/jni/out/libandroidx.graphics.path.so"
               rm -rf "$tmpdir/jni/out" 2>/dev/null || true
-              (cd "$tmpdir" && zip -qr "$OLDPWD/$(basename "$aar")" .)
+
+              (cd "$tmpdir" && zip -qr "$aar_path.tmp" .)
+
+              mv "$aar_path.tmp" "$aar_path"
               rm -rf "$tmpdir"
             fi
           done
 
-      - uses: gradle/actions/setup-gradle@v4
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: "8.14.3"
 
       - name: Set up JDK 17
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           distribution: temurin
-          java-version: '17'
+          java-version: "17"
 
-      - name: Create out directory
+      - name: Create output directory
         run: mkdir -p out
 
-      - name: Build Publishing .aab
+      - name: Build Publishing AAB
         if: github.repository_owner == 'MojoLauncher' && github.ref_name == 'v3_openjdk'
         run: |
           gradle :app_orynlauncher:bundleFullGplay
+
           mv app_orynlauncher/build/outputs/bundle/fullGplay/app_orynlauncher-full-gplay.aab out/app-gplay.aab
 
       - name: Build AveronLauncher Debug APK
         run: |
           gradle :app_orynlauncher:assembleFullDebug
-          mv app_orynlauncher/build/outputs/apk/full/debug/app_orynlauncher-full-debug.apk out/AveronLauncher-V6-Debug.apk
+
+          mv app_orynlauncher/build/outputs/apk/full/debug/app_orynlauncher-full-debug.apk out/AveronLauncherV6-Debug.apk
 
       - name: Build Debug APK (No Runtime)
         run: |
           gradle :app_orynlauncher:assembleNoruntimeDebug
-          mv app_orynlauncher/build/outputs/apk/noruntime/debug/app_orynlauncher-noruntime-debug.apk out/AveronLauncher-V6-NoRuntime-Debug.apk
+
+          mv app_orynlauncher/build/outputs/apk/noruntime/debug/app_orynlauncher-noruntime-debug.apk out/AveronLauncher-noruntime.apk
 
       - name: Build Nightly Release APK
         if: github.repository_owner == 'MojoLauncher' && github.ref_name == 'v3_openjdk'
         run: |
           gradle :app_orynlauncher:assembleFullPubRelease
+
           mv app_orynlauncher/build/outputs/apk/full/pubRelease/app_orynlauncher-full-pubRelease.apk out/AveronLauncher-release.apk
 
       - name: Generate MD5 Checksums
         run: |
-          md5sum out/AveronLauncher-V6-Debug.apk > out/AveronLauncher-V6-Debug.md5
-          md5sum out/AveronLauncher-V6-NoRuntime-Debug.apk > out/AveronLauncher-V6-NoRuntime-Debug.md5
+          md5sum out/AveronLauncherV6-Debug.apk > out/AveronLauncherV6-Debug.md5
+          md5sum out/AveronLauncher-noruntime.apk > out/AveronLauncher-noruntime.md5
 
       - name: Upload AveronLauncher Debug APK
         uses: actions/upload-artifact@v4
         with:
-          name: AveronLauncher-V6-Debug
+          name: AveronLauncherV6-Debug
           path: |
-            out/AveronLauncher-V6-Debug.apk
-            out/AveronLauncher-V6-Debug.md5
+            out/AveronLauncherV6-Debug.apk
+            out/AveronLauncherV6-Debug.md5
 
-      - name: Upload AveronLauncher Debug APK (No Runtime)
+      - name: Upload Debug APK (No Runtime)
         uses: actions/upload-artifact@v4
         with:
-          name: AveronLauncher-V6-NoRuntime
+          name: AveronLauncher-noruntime
           path: |
-            out/AveronLauncher-V6-NoRuntime-Debug.apk
-            out/AveronLauncher-V6-NoRuntime-Debug.md5
+            out/AveronLauncher-noruntime.apk
+            out/AveronLauncher-noruntime.md5
 
       - name: Release Nightly APK
         if: github.repository_owner == 'MojoLauncher' && github.ref_name == 'v3_openjdk'
@@ -143,12 +160,13 @@ jobs:
             out/AveronLauncher-release.apk
 
       - name: Upload AAB
+        if: github.repository_owner == 'MojoLauncher' && github.ref_name == 'v3_openjdk'
         uses: actions/upload-artifact@v4
         with:
           name: AveronLauncher-release-aab
           path: out/app-gplay.aab
 
-      - name: Upload onto the Google Play testing track
+      - name: Upload onto Google Play Testing Track
         continue-on-error: true
         if: github.repository_owner == 'MojoLauncher' && github.ref_name == 'v3_openjdk'
         uses: r0adkll/upload-google-play@v1.1.5
