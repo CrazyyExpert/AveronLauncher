@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <!-- App name part -->
-    <string name="app_short_name">OrynLauncher</string>
-    <string name="oryn_app_name" translatable="false">OrynLauncher</string>
+    <string name="app_short_name">AveronLauncher</string>
+    <string name="oryn_app_name" translatable="false">AveronLauncher</string>
 
     <!-- Action bar part -->
 
@@ -352,7 +352,7 @@
     <string name="modpack_download_downloading_mods">Downloading mods (%.2f MB / %.2f MB)</string>
     <string name="modpack_download_downloading_mods_fc">Downloading mods (File %d out of %d)</string>
     <string name="modpack_download_applying_overrides">Applying overrides (%d/%d)</string>
-    <string name="modpack_install_notification_title">OrynLauncher Modpack Installer</string>
+    <string name="modpack_install_notification_title">AveronLauncher Modpack Installer</string>
     <string name="modpack_install_notification_success">Click here to finish modpack installation</string>
     <string name="modpack_install_notification_data_not_available">Failed to download mod loader information</string>
     <string name="modpack_install_modloader_download_failed">Failed to download the mod loader files</string>
@@ -385,7 +385,7 @@
     <string name="preference_category_miscellaneous">Miscellaneous settings</string>
     <string name="preference_category_video">Video settings</string>
     <string name="notification_permission_dialog_title">Permission request</string>
-    <string name="notification_permission_dialog_text">OrynLauncher requires a permission to post notifications to prevent game/modpack downloads from stopping when you leave the app. Without this permission, Android may shut down your downloads when you put OrynLauncher in background mode.</string>
+    <string name="notification_permission_dialog_text">AveronLauncher requires a permission to post notifications to prevent game/modpack downloads from stopping when you leave the app. Without this permission, Android may shut down your downloads when you put OrynLauncher in background mode.</string>
     <string name="notification_permission_toast">You can always change your mind later by going into Settings</string>
     <string name="preference_ask_for_notification_title">Allow notifications</string>
     <string name="preference_ask_for_notification_description">Click to re-request the notification permission, required for game/modpack background downloads to work properly.</string>
@@ -444,7 +444,7 @@
     <string name="local_login_bad_username_title">Unsuitable username</string>
     <string name="local_login_bad_username_text">The username must be between 3–16 characters long, and must only contain latin letters, numbers 0–9 and underscores.</string>
     <string name="quick_setting_title">Quick settings</string>
-    <string name="recorder_menu_item">🎥 OrynLauncher Recorder — Start / Stop</string>
+    <string name="recorder_menu_item">🎥 AveronnLauncher Recorder — Start / Stop</string>
     <string name="create_bta_instance">Create \"Better than Adventure!\" instance</string>
     <string name="select_bta_version">Select \"Better than Adventure!\" version</string>
     <string name="bta_installer_available_versions">Supported BTA versions</string>
@@ -526,7 +526,7 @@
     <string name="preference_button_transparency">Buttons transparency</string>
     <string name="preference_button_transparency_summary">Changes on-screen buttons transparency</string>
     <string name="main_please_restart">Please restart the game from the launcher homescreen</string>
-    <string name="oryn_update_title">Oryn Need to Update!</string>
+    <string name="oryn_update_title">Averon Need to Update!</string>
     <string name="oryn_update_message">A newer OrynLauncher release is available: %1$s (v%2$s). Update now to get the latest version.</string>
     <string name="oryn_update_button">Update</string>
     <string name="oryn_update_later">Later</string>
